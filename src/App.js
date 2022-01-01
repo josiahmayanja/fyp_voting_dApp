@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react'
+import MetaMask_Wallet from './MetaMask_Wallet';
+import Ballot from './Ballot'
+import Select from 'react-select'
+import Vote from './Vote';
+
+//let metaMaskConnected = false;
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+]
+
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MetaMask_Wallet/>
+      <Ballot/>
+      <Select options={options} />
+      <Vote/>
     </div>
   );
 }
