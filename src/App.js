@@ -6,22 +6,27 @@ import Select from 'react-select'
 import Vote from './Vote';
 
 import { ethers } from 'ethers';
-import contract from 'truffle-contract'
+//import contract from 'truffle-contract'
 
-Web3
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import BallotsContract from './contracts/Ballot.json';
-import Web3 from 'web3';
+import { Card } from 'react-bootstrap';
 //import Web3 from 'web3';
 
 //let metaMaskConnected = false;
+// const options = [
+//   { value: 'chocolate', label: 'Chocolate' },
+//   { value: 'strawberry', label: 'Strawberry' },
+//   { value: 'vanilla', label: 'Vanilla' }
+
+
+// ]
+
 const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-
-
+  { value: '0', label: 'A' },
+  { value: '0', label: 'B' }
 ]
 
 // A Web3Provider wraps a standard Web3 provider, which is
@@ -44,14 +49,24 @@ var abi = JSON.parse( '[{"constant":true,"inputs":[],"name":"getInfo","outputs":
 // const networkId = await web3.net.getId();
 // const smartContract = new web3.eth.Contract(BallotsContract.abi, )
 
+<Card>
+  <Card.Header></Card.Header>
+</Card>
 
 function App() {
   return (
     <div className="App">
-      <MetaMask_Wallet/>
-      <Ballot/>
-      <Select options={options}/>
+       <br />
+    <Card>
+      <Card.Header><MetaMask_Wallet/></Card.Header>
+      <br />
+      <Ballot className="Ballot_Table"/>
+      <br />
+      <Select className="Select_btn" options={options}/>
+      <br />
       <Vote/>
+      <br />
+      </Card>
     </div>
   );
 }
