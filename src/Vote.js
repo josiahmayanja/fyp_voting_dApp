@@ -2,8 +2,9 @@ import Button from 'react-bootstrap/Button'
 import React, { Component } from 'react'
 
 function sayHello() {
-    alert('You clicked me!');
+    alert('You voted');
   }
+
 
 const Vote = () => {
     return (
@@ -12,5 +13,7 @@ const Vote = () => {
     </div>
     );
 }
+
+
 
 export default Vote;
