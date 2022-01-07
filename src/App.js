@@ -1,9 +1,6 @@
 import './App.css';
 import React from 'react'
 import MetaMask_Wallet from './MetaMask_Wallet';
-import Ballot from './Ballot'
-import Select from 'react-select'
-import Vote from './Vote';
 
 import { ethers } from 'ethers';
 //import contract from 'truffle-contract'
@@ -58,15 +55,9 @@ function App() {
     <div className="App">
        <br />
     <Card>
-      <Card.Header><MetaMask_Wallet/></Card.Header>
-      <br />
-      <Ballot className="Ballot_Table"/>
-      <br />
-      <Select className="Select_btn" options={options}/>
-      <br />
-      <Vote/>
-      <br />
-      </Card>
+     <MetaMask_Wallet/>
+    </Card>
+    <br />
     </div>
   );
 }

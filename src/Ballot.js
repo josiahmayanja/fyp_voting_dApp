@@ -7,11 +7,11 @@ const Ballot = () => {
 
     return (
         <div className="Ballot_Table" >
-        <Table striped bordered hover  style={{width: 100}}>
+        <Table striped bordered hover  style={{width: 400}}>
             <thead>
                 <tr>
                 <th>#</th>
-                <th>Canidate</th>
+                <th>Canididate</th>
                 <th>Vote Tally</th>
                 </tr>
             </thead>

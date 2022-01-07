@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
+import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table';
+import { Container, Form } from 'react-bootstrap';
+
 
 
 
@@ -34,15 +38,20 @@ const connectWalletHandler = () => {
     }
 }
 
+const castVote = () => {
+    console.log('vote');
+}
 
 const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount);
+    console.log("account");
     getUserBalance(newAccount.toString());
 }
 
 const getUserBalance = (address) => {
     window.ethereum.request({method: 'eth_getBalance', params:[address, 'latest']})
     .then(balance => {
+        console.log(ethers.utils.formatEther(balance));
         setUserBalance(ethers.utils.formatEther(balance));
     })
 }
@@ -56,17 +65,80 @@ window.ethereum.on('accountsChanged', accountChangedHandler);
 window.ethereum.on('chainChanged', chainChangedHandler);
 
 
+
+
+
+
+
+
+
+
+
     return (
 		<div className='Wallet'>
-		<h4> {"Connection to MetaMask"} </h4>
-			<button onClick={connectWalletHandler}>{connectButtonText}</button>
-			<div className='accountDisplay'>
-				<h3>Voter Address: {defaultAccount}</h3>
-			</div>
-			<div className='balanceDisplay'>
-				<h3>Balance: {userBalance}</h3>
-			</div>
-			{errorMessage}
+            <br />  
+            <Container>
+
+                <h4> {"Connection to MetaMask"} </h4>
+
+                <Button onClick={connectWalletHandler}>{connectButtonText}</Button>
+
+                <div className='accountDisplay'>
+                    <h3>Voter Address: {defaultAccount}</h3>
+                </div>
+
+                <div className='balanceDisplay'>
+                    <h3>Balance: {userBalance}</h3>
+                </div>
+
+
+                <div className="Ballot_Table">
+                    <Table striped bordered hover   style={{width: 400}}>
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Canididate</th>
+                            <th>Vote Tally</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        {/* line split */}
+                            <tr>
+                            <td>1</td>
+                            <td></td>
+                            <td></td>
+                            </tr>
+
+
+                        {/* line split */}
+                            <tr>
+                            <td>2</td>
+                            <td></td>
+                            <td></td>
+
+                            </tr>
+                        </tbody>
+                    </Table>
+                </div>
+                <br />  
+
+                <div>
+                    <Form.Select>
+                        <option></option>
+                    </Form.Select>
+                </div>
+                <br />  
+
+
+
+                <div>
+                    <Button onClick={castVote} variant="success">Vote</Button>{' '}
+                </div>
+                
+                {errorMessage}
+                </Container> 
+                <br />  
 		</div>
 	);
 }
