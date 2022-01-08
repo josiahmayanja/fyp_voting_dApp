@@ -1,30 +1,9 @@
 import './App.css';
 import React from 'react'
 import MetaMask_Wallet from './MetaMask_Wallet';
-
 import { ethers } from 'ethers';
-//import contract from 'truffle-contract'
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-import BallotsContract from './contracts/Ballot.json';
 import { Card } from 'react-bootstrap';
-//import Web3 from 'web3';
 
-//let metaMaskConnected = false;
-// const options = [
-//   { value: 'chocolate', label: 'Chocolate' },
-//   { value: 'strawberry', label: 'Strawberry' },
-//   { value: 'vanilla', label: 'Vanilla' }
-
-
-// ]
-
-const options = [
-  { value: '0', label: 'A' },
-  { value: '0', label: 'B' }
-]
 
 // A Web3Provider wraps a standard Web3 provider, which is
 // what MetaMask injects as window.ethereum into each page
