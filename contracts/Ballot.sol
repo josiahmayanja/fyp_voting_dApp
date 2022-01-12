@@ -18,13 +18,7 @@ contract Ballot {
 
     uint256 public candidatesCount;
 
-    constructor() {
-        //dummy candidates
-        addCandidate("Candidate 1");
-        addCandidate("Candidate 2");
-    }
-
-    function addCandidate(string memory _name) private {
+    function addCandidate(string memory _name) external {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
@@ -32,5 +26,17 @@ contract Ballot {
     function vote(uint256 _candidateId) public {
         voters[msg.sender] = true;
         candidates[_candidateId].voteTally++;
+    }
+
+    function getCandidatesCount() public view returns (uint256) {
+        return candidatesCount;
+    }
+
+    function readVoteTally(uint256 _candidateId)
+        external
+        view
+        returns (uint256)
+    {
+        return candidates[_candidateId].voteTally;
     }
 }
