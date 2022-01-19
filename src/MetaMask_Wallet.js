@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { ethers, Contract } from 'ethers';
-import Button from 'react-bootstrap/Button'
-import Table from 'react-bootstrap/Table';
-import { Container, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { ethers } from 'ethers';
+import { Container, Form, Navbar, Card, Stack, Button, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Ballot from './contracts/Ballot.json';
+
 
 
 const MetaMask_Wallet = () => {
@@ -14,15 +13,19 @@ const [defaultAccount, setDefaultAccount] = useState(null);
 const [userBalance, setUserBalance] = useState(null);
 const [connectButtonText, setConnectButtonText] = useState('Connect Wallet');
 
+const [contractAddress, setContractAddress] = useState(null);
+
 const [data, setData] = useState(undefined);
 
-let contractAddress;
+const [ballotProposal, setBallotProposal] = useState(null);
 
+const [ballotSubmit, setBallotSubmit] = useState(false);
+
+const [table, setTable] = useState([]);
 
 async function getVote() {
-    let add = "0xC0c8F83e7f3Fb1Db81778587a8b0ae1D35Fa005D";
     const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-    let factory = new ethers.Contract(add, Ballot.abi, signer);
+    let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
 
     try {
         const data = await factory.getCandidatesCount()
@@ -33,88 +36,136 @@ async function getVote() {
 }
 
 
+// async function getCandidateCount() {
+//     try {
+//         console.log('Running deployWithEthers script...')
 
+//         const currentAccount = defaultAccount; 
 
+//         console.log(txAdd);
 
-async function addCanididate() {
-    try {
-        console.log('Running deployWithEthers script...')
+//          const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
+//         let factory = new ethers.Contract(txAdd, Ballot.abi, signer);
 
-        const currentAccount = defaultAccount; 
-
-        console.log(contractAddress);
-        let add = "0xC0c8F83e7f3Fb1Db81778587a8b0ae1D35Fa005D";
-
-
-        const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-
-        console.log(add);
-        let factory = new ethers.Contract(add, Ballot.abi, signer);
-
-        const tx = await factory.addCandidate("Aguero");
-        const receipt = await tx.wait();
-        console.log(receipt);
+//         // const tx = await factory.addCandidate(name);
+//         // const receipt = await tx.wait();
+//         // console.log(receipt);
         
-        console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
-        console.log(`Gas used: ${receipt.gasUsed.toString()}`);
+//         // console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
+//         // console.log(`Gas used: ${receipt.gasUsed.toString()}`);
   
-        accountChangedHandler(currentAccount);
-        console.log('Deployment successful.');
-        getVote()
-    } catch (e) {
-        console.log(e.message)
-    }
-}        
+//         // accountChangedHandler(currentAccount);
+//         // console.log('Deployment successful.');
+//         // getVote()
+//     } catch (e) {
+//         console.log(e.message)
+//     }
+// }        
+
+
+
+async function getCandidates () {
+    try {
+                console.log('Running deployWithEthers script...')
+        
+                const currentAccount = defaultAccount; 
+   
+                console.log(contractAddress);
+        
+                const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
+                let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
+        
+                const tx = await factory.getCandidates();
+                //let tx = await factory.getCandidates();
+
+                console.log(tx); 
+                console.log(tx[0]); 
+
+
+                let tally = [];
+                let obj = [];
+
+                tx[1].forEach(element => tally.push(element.toNumber()));
+                console.log(tally);
+                
+               // tx[0].forEach(element => obj.push( { candidateName: element, tally: tally[tx[0].indexOf(element)] } )       );
+
+                tx[0].forEach(element => obj.push([ element,tally[tx[0].indexOf(element)] ])  );
+                console.log(obj);
+
+                console.log(Array.isArray(obj));
+
+               setTable(obj);
+   
+                accountChangedHandler(currentAccount);
+                console.log('Deployment successful.');
+            } catch (e) {
+                console.log(e.message)
+            }   
+
+}
+
+async function getCandidatesCount() {
+    try {
+                console.log('Running deployWithEthers script...')
+        
+                const currentAccount = defaultAccount; 
+   
+                console.log(contractAddress);
+        
+                const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
+                let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
+        
+                const tx = await factory.getCandidatesCount();
+                console.log(tx.toNumber()); 
+                
+                // const nx =  await factory.getLength();
+                // console.log(nx.toNumber());
+                
+
+                accountChangedHandler(currentAccount);
+                console.log('Deployment successful.');
+            } catch (e) {
+                console.log(e.message)
+            }   
+
+}
 
 
 
 
-async function deployContract () {
+
+
+
+async function deploySmartContract () {
     try {
         console.log('Running deployWithEthers script...')
 
         let currentAccount = defaultAccount; 
 
-    
-        const constructorArgs = [
-        
-        ]    // Put constructor args (if any) here for your contract
+        const leaders = ["Joe Biden", "Boris Johnson", "Angela Merkel"];
+        console.log(leaders);
 
-        // Note that the script needs the ABI which is generated from the compilation artifact.
-        // Make sure contract is compiled and artifacts are generated
-
-        console.log(Ballot.abi);
-        
-        const FormatTypes = ethers.utils.FormatTypes;
-
-        const iface = new ethers.utils.Interface(Ballot.abi);
-        console.log(iface);
-        iface.format(FormatTypes.full);
-
-        console.log(iface);
-       // check this out
-        console.log(iface._abiCoder);
-
-
-    
 
         const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-    
         let factory = new ethers.ContractFactory(Ballot.abi, Ballot.bytecode, signer);
-    
-        let contract = await factory.deploy(...constructorArgs);
+
+        let contract = await factory.deploy(leaders, "This is a car election");
+        
+
     
         // The contract is NOT deployed yet; we must wait until it is mined
         const tx = await contract.deployed()
-        contractAddress = tx.address;
-        console.log(contractAddress);
+
+        setContractAddress(tx.address);
+        //console.log(tx.address);
+
         accountChangedHandler(currentAccount);
         console.log('Deployment successful.')
     } catch (e) {
         console.log(e.message)
     }
-}       
-
+} 
 
 
 
@@ -127,7 +178,7 @@ const connectWalletHandler = () => {
         .then(result => {
             console.log('The active account is ' + result[0]);
             accountChangedHandler(result[0]);
-            setConnectButtonText('Wallet Connected');
+            setConnectButtonText('Wallet Connected to Metamask');
             getUserBalance(result[0]);
         })
         .catch(error => {
@@ -140,7 +191,6 @@ const connectWalletHandler = () => {
         setErrorMessage('Please install MetaMask browser extension to interact with page');
     }
 }
-
 
 
 const accountChangedHandler = (newAccount) => {
@@ -158,33 +208,108 @@ const getUserBalance = (address) => {
 
 const chainChangedHandler = () => {
     window.location.reload();
+    connectWalletHandler();
 }
 
 window.ethereum.on('accountsChanged', accountChangedHandler);
 
 window.ethereum.on('chainChanged', chainChangedHandler);
 
+const [isproposalFormTextValid, setIsProposalTextValid] = useState(false);
+
+
+
+ const propsalTextHandler = (event) => {
+
+     if ((typeof event.target.value === 'string') && event.target.value) {
+        setBallotProposal(event.target.value);
+        setIsProposalTextValid(true);
+    } else {
+        setBallotProposal(null);
+        setIsProposalTextValid(false);      
+    }
+}
+
+
+const submitProposal = () => {
+    console.log('Ballot Proposal Name: ', ballotProposal);
+    setBallotProposal(true);
+}
+
+const cand = () => {
+    console.log(table);
+}
+
 
 
     return (
 		<div className='Wallet'>
-            <br />  
+
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="#">E-Voting Dapp</Navbar.Brand>
+                </Container>
+            </Navbar>
+
+            <br/> 
+
             <Container>
 
-                <h4> {"Connection to MetaMask"} </h4>
+            <Card bg="light" className="text-center">
+                <Card.Header>MetaMask Wallet Connection</Card.Header>
+                <Card.Body>
+                    <Card.Text>Account Address: {defaultAccount}</Card.Text>
+                    <Card.Text>Balance: {userBalance} </Card.Text>
+                    <Button variant="primary" onClick={connectWalletHandler}>{connectButtonText}</Button>
+                </Card.Body>
+            </Card>
 
-                <Button onClick={connectWalletHandler}>{connectButtonText}</Button>
+            <br/> 
 
-                <div className='accountDisplay'>
-                    <h3>Voter Address: {defaultAccount}</h3>
+            <Card bg="light" className="text-center">
+                <Card.Header>Add Ballot Proposal</Card.Header>
+                <Card.Body>
+                    <Stack direction="horizontal" gap={3}>
+                        <Form.Control type="text" className="proposal" placeholder="Add proposal name here..." onChange={propsalTextHandler}/>
+                   <Button variant="secondary" disabled={!isproposalFormTextValid} onClick={submitProposal}>Submit</Button> 
+                    </Stack>                  
+                </Card.Body>
+            </Card>
+
+            <br/> 
+
+            <Card bg="light" className="text-center">
+                <Card.Header>Add Candidates</Card.Header>
+                <Card.Body>
+                    <Stack direction="horizontal" gap={3}>
+                        <Form.Control type="text" className="candidate" placeholder="Add candidate name here..."/>
+                   <Button variant="secondary" >Submit</Button> 
+                    </Stack>                  
+                </Card.Body>
+            </Card>
+
+            <br/>  
+                <div className="text-center">
+                    <Button onClick={deploySmartContract} variant="secondary">Deploy Smart Contract</Button>{' '}
                 </div>
+                <div className="text-center">{contractAddress}</div>
+            <br/> 
 
-                <div className='balanceDisplay'>
-                    <h3>Balance: {userBalance} </h3>
-                </div>
+            
 
+
+
+            <br/>
+
+            <Card bg="light" className="text-center">
+                <Card.Header>Ballot</Card.Header>
+
+                <br/>
 
                 <div className="Ballot_Table">
+
+
+                <br/> 
                     <Table striped bordered hover   style={{width: 400}}>
                         <thead>
                             <tr>
@@ -195,43 +320,66 @@ window.ethereum.on('chainChanged', chainChangedHandler);
                         </thead>
                         <tbody>
 
-                        {/* line split */}
-                            <tr>
-                            <td>1</td>
-                            <td></td>
-                            <td>{data}</td>
-                            </tr>
 
-
-                        {/* line split */}
-                            <tr>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                            </tr>
+                        {table.map((element, index) => {
+                            return (
+                                <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{element[0]}</td>
+                                <td>{element[1]}</td>
+                                </tr>
+                            );
+                          })}
                         </tbody>
                     </Table>
                 </div>
                 <br/>  
 
                 <div>
-                    <Form.Select>
-                        <option></option>
+                    <Form.Select aria-label="Default select example">
+                        <option>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
                     </Form.Select>
-                </div>
-                <br/>  
-
-                <div>
-                    <Button onClick={deployContract} variant="secondary">Deploy Contract</Button>{' '}
                 </div>
 
                 <br/> 
 
 
+                <div>
+                    <Button variant="success">Vote</Button>{' '}
+                </div>
 
+                <br/> 
+
+                <div>
+                    <Button variant="success" onClick={getCandidatesCount}>Candidates Count</Button>{' '}
+                </div>
+
+                <br/> 
+                <div>
+                    <Button variant="success" onClick={getCandidates}>Get Candidates</Button>{' '}
+                </div>
+
+            <br/>
+                <div>
+                    <Button variant="success" onClick={cand}>tally</Button>{' '}
+                </div>
+
+                <br/> 
+
+                
+
+            </Card>
+               
+
+            {/*
                 <div>
                     <Button onClick={addCanididate} variant="warning">Add Candidate</Button>{' '}
                 </div>
+
+                <br/> */}
                 
                 {errorMessage}
                 </Container> 

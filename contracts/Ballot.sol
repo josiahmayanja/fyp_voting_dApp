@@ -18,9 +18,39 @@ contract Ballot {
 
     uint256 public candidatesCount;
 
-    function addCandidate(string memory _name) external {
-        candidatesCount++;
+    uint256 public length;
+
+    string public proposalName;
+
+    address public chairperson;
+
+    constructor(string[] memory _candidateNames, string memory _proposalName) {
+        chairperson = msg.sender;
+        proposalName = _proposalName;
+        length = _candidateNames.length;
+
+        for (uint256 i = 0; i < _candidateNames.length; i++) {
+            addCandidate(_candidateNames[i]);
+        }
+    }
+
+    function addCandidate(string memory _name) public {
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+        candidatesCount++;
+    }
+
+    function getCandidates()
+        external
+        view
+        returns (string[] memory, uint256[] memory)
+    {
+        string[] memory names = new string[](candidatesCount);
+        uint256[] memory voteCounts = new uint256[](candidatesCount);
+        for (uint256 i = 0; i < candidatesCount; i++) {
+            names[i] = candidates[i].name;
+            voteCounts[i] = candidates[i].voteTally;
+        }
+        return (names, voteCounts);
     }
 
     function vote(uint256 _candidateId) public {
@@ -30,6 +60,14 @@ contract Ballot {
 
     function getCandidatesCount() public view returns (uint256) {
         return candidatesCount;
+    }
+
+    function getLength() public view returns (uint256) {
+        return length;
+    }
+
+    function getProposalName() public view returns (string memory) {
+        return proposalName;
     }
 
     function readVoteTally(uint256 _candidateId)

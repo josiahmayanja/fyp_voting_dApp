@@ -6,15 +6,7 @@ import { Navbar, Container } from 'react-bootstrap';
 function App() {
   return (
     <div className="App">
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#">E-Voting Dapp</Navbar.Brand>
-        </Container>
-      </Navbar>
-
-       <br />
      <MetaMask_Wallet/>
-
     <br />
     </div>
   );
