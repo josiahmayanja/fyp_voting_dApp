@@ -23,6 +23,8 @@ const [ballotSubmit, setBallotSubmit] = useState(false);
 
 const [table, setTable] = useState([]);
 
+const [voteNumber, setVoteNumber] = useState("");
+
 async function getVote() {
     const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
     let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
@@ -34,34 +36,6 @@ async function getVote() {
         console.log("Error: ", err);
     }   
 }
-
-
-// async function getCandidateCount() {
-//     try {
-//         console.log('Running deployWithEthers script...')
-
-//         const currentAccount = defaultAccount; 
-
-//         console.log(txAdd);
-
-//          const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-//         let factory = new ethers.Contract(txAdd, Ballot.abi, signer);
-
-//         // const tx = await factory.addCandidate(name);
-//         // const receipt = await tx.wait();
-//         // console.log(receipt);
-        
-//         // console.log(`Transaction confirmed in block ${receipt.blockNumber}`);
-//         // console.log(`Gas used: ${receipt.gasUsed.toString()}`);
-  
-//         // accountChangedHandler(currentAccount);
-//         // console.log('Deployment successful.');
-//         // getVote()
-//     } catch (e) {
-//         console.log(e.message)
-//     }
-// }        
-
 
 
 async function getCandidates () {
@@ -76,7 +50,6 @@ async function getCandidates () {
                 let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
         
                 const tx = await factory.getCandidates();
-                //let tx = await factory.getCandidates();
 
                 console.log(tx); 
                 console.log(tx[0]); 
@@ -88,15 +61,13 @@ async function getCandidates () {
                 tx[1].forEach(element => tally.push(element.toNumber()));
                 console.log(tally);
                 
-               // tx[0].forEach(element => obj.push( { candidateName: element, tally: tally[tx[0].indexOf(element)] } )       );
-
                 tx[0].forEach(element => obj.push([ element,tally[tx[0].indexOf(element)] ])  );
                 console.log(obj);
 
                 console.log(Array.isArray(obj));
 
                setTable(obj);
-   
+               setVoteNumber("0");
                 accountChangedHandler(currentAccount);
                 console.log('Deployment successful.');
             } catch (e) {
@@ -104,35 +75,6 @@ async function getCandidates () {
             }   
 
 }
-
-async function getCandidatesCount() {
-    try {
-                console.log('Running deployWithEthers script...')
-        
-                const currentAccount = defaultAccount; 
-   
-                console.log(contractAddress);
-        
-                const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-                let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
-        
-                const tx = await factory.getCandidatesCount();
-                console.log(tx.toNumber()); 
-                
-                // const nx =  await factory.getLength();
-                // console.log(nx.toNumber());
-                
-
-                accountChangedHandler(currentAccount);
-                console.log('Deployment successful.');
-            } catch (e) {
-                console.log(e.message)
-            }   
-
-}
-
-
-
 
 
 
@@ -240,6 +182,12 @@ const cand = () => {
     console.log(table);
 }
 
+const handleChange = (e) => {
+    console.log(e.target.value);
+    console.log(typeof e.target.value);
+    setVoteNumber(e.target.value);
+}
+
 
 
     return (
@@ -282,7 +230,7 @@ const cand = () => {
                 <Card.Header>Add Candidates</Card.Header>
                 <Card.Body>
                     <Stack direction="horizontal" gap={3}>
-                        <Form.Control type="text" className="candidate" placeholder="Add candidate name here..."/>
+                        <Form.Control type="text" className="candidate" placeholder="Add candidate's name here..."/>
                    <Button variant="secondary" >Submit</Button> 
                     </Stack>                  
                 </Card.Body>
@@ -307,9 +255,6 @@ const cand = () => {
                 <br/>
 
                 <div className="Ballot_Table">
-
-
-                <br/> 
                     <Table striped bordered hover   style={{width: 400}}>
                         <thead>
                             <tr>
@@ -319,8 +264,6 @@ const cand = () => {
                             </tr>
                         </thead>
                         <tbody>
-
-
                         {table.map((element, index) => {
                             return (
                                 <tr key={index}>
@@ -333,14 +276,18 @@ const cand = () => {
                         </tbody>
                     </Table>
                 </div>
+
                 <br/>  
 
+                <div>{voteNumber}</div>
+
                 <div>
-                    <Form.Select aria-label="Default select example">
-                        <option>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <Form.Select onChange={ (e) => handleChange(e)}>
+                        {table.map((element, index) => {
+                            return (
+                                <option key={index} value={index}>{element[0]}</option>
+                            );
+                          })}
                     </Form.Select>
                 </div>
 
@@ -349,12 +296,6 @@ const cand = () => {
 
                 <div>
                     <Button variant="success">Vote</Button>{' '}
-                </div>
-
-                <br/> 
-
-                <div>
-                    <Button variant="success" onClick={getCandidatesCount}>Candidates Count</Button>{' '}
                 </div>
 
                 <br/> 
