@@ -15,27 +15,11 @@ const [connectButtonText, setConnectButtonText] = useState('Connect Wallet');
 
 const [contractAddress, setContractAddress] = useState(null);
 
-const [data, setData] = useState(undefined);
-
 const [ballotProposal, setBallotProposal] = useState(null);
-
-const [ballotSubmit, setBallotSubmit] = useState(false);
 
 const [table, setTable] = useState([]);
 
 const [voteNumber, setVoteNumber] = useState("");
-
-async function getVote() {
-    const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
-    let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
-
-    try {
-        const data = await factory.getCandidatesCount()
-        console.log(data.toString());
-    } catch (err) {
-        console.log("Error: ", err);
-    }   
-}
 
 
 async function getCandidates () {
@@ -66,8 +50,8 @@ async function getCandidates () {
 
                 console.log(Array.isArray(obj));
 
-               setTable(obj);
-               setVoteNumber("0");
+                setTable(obj);
+                setVoteNumber("0");
                 accountChangedHandler(currentAccount);
                 console.log('Deployment successful.');
             } catch (e) {
@@ -78,7 +62,7 @@ async function getCandidates () {
 
 
 
-
+// don't need to have asyn methods -- make them standard
 async function deploySmartContract () {
     try {
         console.log('Running deployWithEthers script...')
@@ -94,13 +78,10 @@ async function deploySmartContract () {
 
         let contract = await factory.deploy(leaders, "This is a car election");
         
-
-    
         // The contract is NOT deployed yet; we must wait until it is mined
-        const tx = await contract.deployed()
+        const tx = await contract.deployed();
 
         setContractAddress(tx.address);
-        //console.log(tx.address);
 
         accountChangedHandler(currentAccount);
         console.log('Deployment successful.')
@@ -108,6 +89,64 @@ async function deploySmartContract () {
         console.log(e.message)
     }
 } 
+
+
+async function voteCandidate() {
+    try {
+        console.log('Running deployWithEthers script...')
+
+        const currentAccount = defaultAccount; 
+
+        console.log(contractAddress);
+
+        const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
+        let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
+
+        console.log(parseInt(voteNumber));
+        console.log(typeof parseInt(voteNumber));
+        
+        const tx = await factory.vote(parseInt(voteNumber));
+        tx.wait();
+
+        accountChangedHandler(currentAccount);
+        console.log('Deployment successful.');
+       // getCandidates();
+    } catch (e) {
+        console.log(e.message)
+    }   
+
+}
+
+
+
+
+async function deploySmartContract () {
+try {
+console.log('Running deployWithEthers script...')
+
+let currentAccount = defaultAccount; 
+
+const leaders = ["Joe Biden", "Boris Johnson", "Angela Merkel"];
+console.log(leaders);
+
+
+const signer = (new ethers.providers.Web3Provider(window.ethereum)).getSigner()
+let factory = new ethers.ContractFactory(Ballot.abi, Ballot.bytecode, signer);
+
+let contract = await factory.deploy(leaders, "This is a car election");
+
+// The contract is NOT deployed yet; we must wait until it is mined
+const tx = await contract.deployed()
+
+setContractAddress(tx.address);
+
+accountChangedHandler(currentAccount);
+console.log('Deployment successful.')
+} catch (e) {
+console.log(e.message)
+}
+
+}
 
 
 
@@ -295,7 +334,7 @@ const handleChange = (e) => {
 
 
                 <div>
-                    <Button variant="success">Vote</Button>{' '}
+                    <Button variant="success" onClick={voteCandidate}>Vote</Button>{' '}
                 </div>
 
                 <br/> 
