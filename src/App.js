@@ -1,13 +1,11 @@
-import './App.css';
-import React from 'react'
-import MetaMask_Wallet from './MetaMask_Wallet';
-import { Navbar, Container } from 'react-bootstrap';
+import "./App.css";
+import React from "react";
+import MetaMask_Wallet from "./MetaMask_Wallet";
 
 function App() {
   return (
     <div className="App">
-     <MetaMask_Wallet/>
-    <br />
+      <MetaMask_Wallet />
     </div>
   );
 }
