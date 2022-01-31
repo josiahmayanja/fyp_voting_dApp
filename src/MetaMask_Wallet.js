@@ -25,6 +25,7 @@ const MetaMask_Wallet = () => {
   const [isPropsalSubmitted, setIsProposalSubmitted] = useState(false);
 
   const [candidateArray, setCandidateArray] = useState([]);
+  const [candidateAddressArray, setCandidateAddressArray] = useState([]);
   const [candidateForm, setCandidateForm] = useState("");
   const [isCandidateFormTextValid, setIsCandidateFormTextValid] =
     useState(false);
@@ -34,6 +35,8 @@ const MetaMask_Wallet = () => {
   const [table, setTable] = useState([]);
 
   const [voteNumber, setVoteNumber] = useState("");
+
+  const [isContractDeployed, setIsContractDeployed] = useState(false);
 
   const getCandidates = async (txAddress) => {
     try {
@@ -106,10 +109,10 @@ const MetaMask_Wallet = () => {
       console.log("Contract Address: ", tx.address);
       setContractAddress(tx.address);
       console.log(contractAddress);
-
       accountChangedHandler(currentAccount);
       console.log("...Deployment successful");
       getCandidates(tx.address);
+      setIsContractDeployed(true);
     } catch (e) {
       console.log(e.message);
     }
@@ -245,6 +248,14 @@ const MetaMask_Wallet = () => {
     setCandidateForm("");
   };
 
+  const ethAddressRegex = () => {
+    const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+
+    console.log(ethRegex.test("0x5c48efe6C6Bb78e1bEad20bD77f6d3977ab19778"));
+    console.log(ethRegex.test("0p5c48efe6C6Bb78e1bEad20bD77f6d3977ab19778"));
+    console.log(ethRegex.test("0xcF01e56aaAB991B43d4BAfe3467761F035069bDE"));
+  };
+
   const ballotWinner = () => {
     let highest = 0;
     let candidate = [];
@@ -298,151 +309,164 @@ const MetaMask_Wallet = () => {
 
         <br />
 
-        <Card bg="light" className="text-center">
-          <Card.Header>Add Ballot Proposal</Card.Header>
-          <Card.Body>
-            {!isPropsalSubmitted ? (
-              <div>
-                <Stack direction="horizontal" gap={3}>
-                  <Form.Control
-                    type="text"
-                    className="proposal"
-                    placeholder="Add proposal name here..."
-                    onChange={propsalTextHandler}
-                  />
-                  <Button
-                    variant="success"
-                    disabled={!isProposalFormTextValid}
-                    onClick={submitProposal}
-                  >
-                    Submit
-                  </Button>{" "}
-                </Stack>
-              </div>
-            ) : (
-              ballotProposal
-            )}
-          </Card.Body>
-        </Card>
+        {!isContractDeployed ? (
+          <div>
+            <Card bg="light" className="text-center">
+              <Card.Header>Add Ballot Proposal</Card.Header>
+              <Card.Body>
+                {!isPropsalSubmitted ? (
+                  <div>
+                    <Stack direction="horizontal" gap={3}>
+                      <Form.Control
+                        type="text"
+                        className="proposal"
+                        placeholder="Add proposal name here..."
+                        onChange={propsalTextHandler}
+                      />
+                      <Button
+                        variant="success"
+                        disabled={!isProposalFormTextValid}
+                        onClick={submitProposal}
+                      >
+                        Submit
+                      </Button>{" "}
+                    </Stack>
+                  </div>
+                ) : (
+                  ballotProposal
+                )}
+              </Card.Body>
+            </Card>
 
-        <br />
+            <br />
 
-        <Card bg="light" className="text-center">
-          <Card.Header>Add Candidates</Card.Header>
-          <Card.Body>
-            {!isCandidateFormSubmitted ? (
-              <Stack direction="horizontal" gap={3}>
-                <Form.Control
-                  type="text"
-                  className="candidate"
-                  placeholder="Add candidate's name here..."
-                  onChange={candidateTextHandler}
-                />
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  disabled={!isCandidateFormTextValid}
-                  onClick={addCandidate}
-                >
-                  Add
-                </Button>
-                <Button
-                  variant="success"
-                  disabled={candidateArray.length <= 1}
-                  onClick={submitCandidateName}
-                >
-                  Submit
-                </Button>
-                <br />
-              </Stack>
-            ) : (
-              <div></div>
-            )}
-            {candidateArray.map((element, index) => {
-              return (
-                <Card.Text key={index} value={index}>
-                  {element}
-                </Card.Text>
-              );
-            })}
-          </Card.Body>
-        </Card>
-
-        <br />
-        <div className="text-center">
-          <Button
-            onClick={deploySmartContract}
-            variant="warning"
-            disabled={!isCandidateFormSubmitted}
-          >
-            Deploy Smart Contract
-          </Button>{" "}
-        </div>
-        <br />
-
-        <br />
-
-        <Card bg="light" className="text-center">
-          <Card.Header>Official Ballot</Card.Header>
-          <br />
-          <div className="text-center">Contract Address: {contractAddress}</div>
-          <div className="text-center">
-            The winner of the ballot is: {winner}
-            {/* {ballotWinner} . */}
-          </div>
-          <br />
-
-          <div className="text-center">
-            <Table
-              className="center"
-              striped
-              bordered
-              hover
-              style={{ width: 400 }}
-            >
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Canididate</th>
-                  <th>Vote Tally</th>
-                </tr>
-              </thead>
-              <tbody>
-                {table.map((element, index) => {
+            <Card bg="light" className="text-center">
+              <Card.Header>Add Candidates</Card.Header>
+              <Card.Body>
+                {!isCandidateFormSubmitted ? (
+                  <Stack direction="horizontal" gap={3}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Add candidate's name here..."
+                      value={candidateForm}
+                      onChange={candidateTextHandler}
+                    />
+                    <Form.Control
+                      type="text"
+                      placeholder="Add candidate's address..."
+                      onChange={ethAddressRegex}
+                    />
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      disabled={!isCandidateFormTextValid}
+                      onClick={addCandidate}
+                    >
+                      Add
+                    </Button>
+                    <Button
+                      variant="success"
+                      disabled={candidateArray.length <= 1}
+                      onClick={submitCandidateName}
+                    >
+                      Submit
+                    </Button>
+                    <br />
+                  </Stack>
+                ) : (
+                  <div></div>
+                )}
+                {candidateArray.map((element, index) => {
                   return (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{element[0]}</td>
-                      <td>{element[1]}</td>
-                    </tr>
+                    <Card.Text key={index} value={index}>
+                      {element}
+                    </Card.Text>
                   );
                 })}
-              </tbody>
-            </Table>
-          </div>
+              </Card.Body>
+            </Card>
 
+            <br />
+            <div className="text-center">
+              <Button
+                onClick={deploySmartContract}
+                variant="warning"
+                disabled={!isCandidateFormSubmitted}
+              >
+                Deploy Smart Contract
+              </Button>{" "}
+            </div>
+          </div>
+        ) : (
           <div>
-            <Form.Select value={voteNumber} onChange={(e) => handleChange(e)}>
-              {table.map((element, index) => {
-                return (
-                  <option key={index} value={index}>
-                    {element[0]}
-                  </option>
-                );
-              })}
-            </Form.Select>
+            <Card bg="light" className="text-center">
+              <Card.Header>Official Ballot</Card.Header>
+              <br />
+              <div className="text-center">
+                Contract Address: {contractAddress}
+              </div>
+              <div className="text-center">
+                The winner of the ballot is: {winner}
+                {/* {ballotWinner} . */}
+              </div>
+              <br />
+
+              <div className="text-center">
+                <Table
+                  className="center"
+                  striped
+                  bordered
+                  hover
+                  style={{ width: 400 }}
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Canididate</th>
+                      <th>Vote Tally</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {table.map((element, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{element[0]}</td>
+                          <td>{element[1]}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </div>
+
+              <div>
+                <Form.Select
+                  value={voteNumber}
+                  onChange={(e) => handleChange(e)}
+                >
+                  {table.map((element, index) => {
+                    return (
+                      <option key={index} value={index}>
+                        {element[0]}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
+              </div>
+
+              <br />
+
+              <div>
+                <Button variant="success" onClick={voteCandidate}>
+                  Vote
+                </Button>{" "}
+              </div>
+
+              <br />
+            </Card>
           </div>
-
-          <br />
-
-          <div>
-            <Button variant="success" onClick={voteCandidate}>
-              Vote
-            </Button>{" "}
-          </div>
-
-          <br />
-        </Card>
+        )}
 
         {errorMessage}
       </Container>
