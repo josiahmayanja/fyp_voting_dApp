@@ -393,7 +393,13 @@ const MetaMask_Wallet = () => {
           <br />
 
           <div className="text-center">
-            <Table striped bordered hover style={{ width: 400 }}>
+            <Table
+              className="center"
+              striped
+              bordered
+              hover
+              style={{ width: 400 }}
+            >
               <thead>
                 <tr>
                   <th>#</th>
