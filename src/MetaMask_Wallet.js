@@ -73,6 +73,7 @@ const MetaMask_Wallet = () => {
       console.log(Array.isArray(obj));
 
       setTable(obj);
+      ballotWinner(obj);
       setVoteNumber("0");
       accountChangedHandler(currentAccount);
       console.log("Successfully retreived information");
@@ -80,6 +81,8 @@ const MetaMask_Wallet = () => {
       console.log(e.message);
     }
   };
+
+  const [winner, setWinner] = [];
 
   const deploySmartContract = async () => {
     try {
@@ -212,6 +215,11 @@ const MetaMask_Wallet = () => {
     setIsProposalSubmitted(true);
   };
 
+  const submitCandidateName = () => {
+    console.log("Submitting candidate names");
+    setIsCandidateFormSubmitted(true);
+  };
+
   const handleChange = (e) => {
     console.log(e.target.value);
     console.log(typeof e.target.value);
@@ -235,6 +243,35 @@ const MetaMask_Wallet = () => {
     setCandidateArray(array);
     console.log(candidateArray);
     setCandidateForm("");
+  };
+
+  const ballotWinner = () => {
+    let highest = 0;
+    let candidate = [];
+
+    //find highest vote tally
+    table.array.forEach((element) => {
+      if (element[1] > highest) {
+        highest = element[1];
+      }
+    });
+
+    //find candiadate(s) that match tally
+    table.array.forEach((element) => {
+      if (element[1] == highest) {
+        candidate.push(element[0]);
+      }
+    });
+
+    console.log(candidate.length);
+
+    setWinner(candidate);
+
+    // if (candidate.length > 1) {
+    //   return console.log(candidate[0]);
+    // } else {
+    //   return console.log("tied at: ", candidate);
+    // }
   };
 
   return (
@@ -274,7 +311,7 @@ const MetaMask_Wallet = () => {
                     onChange={propsalTextHandler}
                   />
                   <Button
-                    variant="secondary"
+                    variant="success"
                     disabled={!isProposalFormTextValid}
                     onClick={submitProposal}
                   >
@@ -293,26 +330,34 @@ const MetaMask_Wallet = () => {
         <Card bg="light" className="text-center">
           <Card.Header>Add Candidates</Card.Header>
           <Card.Body>
-            <Stack direction="horizontal" gap={3}>
-              <Form.Control
-                type="text"
-                className="candidate"
-                placeholder="Add candidate's name here..."
-                onChange={candidateTextHandler}
-              />
-              <Button
-                type="submit"
-                variant="secondary"
-                disabled={!isCandidateFormTextValid}
-                onClick={addCandidate}
-              >
-                Add
-              </Button>
-              <Button variant="secondary" disabled={candidateArray.length <= 1}>
-                Submit
-              </Button>
-            </Stack>
-            <br />
+            {!isCandidateFormSubmitted ? (
+              <Stack direction="horizontal" gap={3}>
+                <Form.Control
+                  type="text"
+                  className="candidate"
+                  placeholder="Add candidate's name here..."
+                  onChange={candidateTextHandler}
+                />
+                <Button
+                  type="submit"
+                  variant="secondary"
+                  disabled={!isCandidateFormTextValid}
+                  onClick={addCandidate}
+                >
+                  Add
+                </Button>
+                <Button
+                  variant="success"
+                  disabled={candidateArray.length <= 1}
+                  onClick={submitCandidateName}
+                >
+                  Submit
+                </Button>
+                <br />
+              </Stack>
+            ) : (
+              <div></div>
+            )}
             {candidateArray.map((element, index) => {
               return (
                 <Card.Text key={index} value={index}>
@@ -325,7 +370,11 @@ const MetaMask_Wallet = () => {
 
         <br />
         <div className="text-center">
-          <Button onClick={deploySmartContract} variant="secondary">
+          <Button
+            onClick={deploySmartContract}
+            variant="warning"
+            disabled={!isCandidateFormSubmitted}
+          >
             Deploy Smart Contract
           </Button>{" "}
         </div>
@@ -337,6 +386,10 @@ const MetaMask_Wallet = () => {
           <Card.Header>Official Ballot</Card.Header>
           <br />
           <div className="text-center">Contract Address: {contractAddress}</div>
+          <div className="text-center">
+            The winner of the ballot is: {winner}
+            {/* {ballotWinner} . */}
+          </div>
           <br />
 
           <div className="text-center">
