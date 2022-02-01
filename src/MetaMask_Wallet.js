@@ -18,6 +18,8 @@ const MetaMask_Wallet = () => {
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [connectButtonText, setConnectButtonText] = useState("Connect Wallet");
+
+  const [isMetamaskConnected, setIsMetamaskConnected] = useState(false);
   const [contractAddress, setContractAddress] = useState(null);
 
   //Ballot Form
@@ -163,6 +165,7 @@ const MetaMask_Wallet = () => {
   const connectWalletHandler = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       console.log("MetaMask Here!");
+      setIsMetamaskConnected(true);
 
       window.ethereum
         .request({ method: "eth_requestAccounts" })
@@ -176,6 +179,7 @@ const MetaMask_Wallet = () => {
           setErrorMessage(error.message);
         });
     } else {
+      setIsMetamaskConnected(false);
       console.log("Need to install MetaMask browser extension");
       setErrorMessage(
         "Please install MetaMask browser extension to interact with page"
@@ -342,6 +346,7 @@ const MetaMask_Wallet = () => {
                         className="proposal"
                         placeholder="Add proposal name here..."
                         onChange={propsalTextHandler}
+                        disabled={!isMetamaskConnected}
                       />
                       <Button
                         variant="success"
