@@ -13,24 +13,39 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Ballot from "./contracts/Ballot.json";
 
 const MetaMask_Wallet = () => {
+  //Metamask
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [connectButtonText, setConnectButtonText] = useState("Connect Wallet");
-
   const [contractAddress, setContractAddress] = useState(null);
 
+  //Ballot Form
   const [ballotProposal, setBallotProposal] = useState("");
   const [isProposalFormTextValid, setIsProposalTextValid] = useState(false);
   const [isPropsalSubmitted, setIsProposalSubmitted] = useState(false);
 
-  const [candidateArray, setCandidateArray] = useState([]);
+  //candidate arrays
+  const [candidateNameArray, setCandidateNameArray] = useState([]);
   const [candidateAddressArray, setCandidateAddressArray] = useState([]);
-  const [candidateForm, setCandidateForm] = useState("");
+
+  //candidate forms
+  const [candidateName, setCandidateName] = useState("");
+  const [candidateEthAddress, setCandidateEthAddress] = useState("");
+
+  //canidate form validations
   const [isCandidateFormTextValid, setIsCandidateFormTextValid] =
     useState(false);
+
+  const [isCandidateFormAddressValid, setIsCandidateFormAddressValid] =
+    useState(false);
+
+  const [isCandidateInputsValid, setIsCandidateInputsValid] = useState(false);
+
   const [isCandidateFormSubmitted, setIsCandidateFormSubmitted] =
     useState(false);
+
+  //Table
 
   const [table, setTable] = useState([]);
 
@@ -102,7 +117,7 @@ const MetaMask_Wallet = () => {
         signer
       );
 
-      const contract = await factory.deploy(candidateArray, ballotProposal);
+      const contract = await factory.deploy(candidateNameArray, ballotProposal);
 
       const tx = await contract.deployed();
 
@@ -191,8 +206,6 @@ const MetaMask_Wallet = () => {
 
   window.ethereum.on("chainChanged", chainChangedHandler);
 
-  // do i need to give the candidates unique adresses as well?
-
   const propsalTextHandler = (event) => {
     if (typeof event.target.value === "string" && event.target.value) {
       setBallotProposal(event.target.value);
@@ -204,12 +217,26 @@ const MetaMask_Wallet = () => {
   };
 
   const candidateTextHandler = (event) => {
+    setCandidateName(event.target.value);
+
     if (typeof event.target.value === "string" && event.target.value) {
-      setCandidateForm(event.target.value);
       setIsCandidateFormTextValid(true);
     } else {
-      setCandidateForm(null);
       setIsCandidateFormTextValid(false);
+    }
+  };
+
+  const candidateEthAddressHandler = (event) => {
+    const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+    const isEthValid = ethRegex.test(event.target.value);
+
+    setCandidateEthAddress(event.target.value);
+
+    if (isEthValid && event.target.value) {
+      setIsCandidateFormAddressValid(true);
+      console.log(isCandidateFormAddressValid);
+    } else {
+      setIsCandidateFormAddressValid(false);
     }
   };
 
@@ -230,7 +257,7 @@ const MetaMask_Wallet = () => {
   };
 
   const addCandidate = () => {
-    const array = candidateArray;
+    const array = candidateNameArray;
 
     // let doesNameExist = false;
 
@@ -242,18 +269,11 @@ const MetaMask_Wallet = () => {
     //     }
     // }
 
-    array.push(candidateForm);
-    setCandidateArray(array);
-    console.log(candidateArray);
-    setCandidateForm("");
-  };
-
-  const ethAddressRegex = () => {
-    const ethRegex = /^0x[a-fA-F0-9]{40}$/;
-
-    console.log(ethRegex.test("0x5c48efe6C6Bb78e1bEad20bD77f6d3977ab19778"));
-    console.log(ethRegex.test("0p5c48efe6C6Bb78e1bEad20bD77f6d3977ab19778"));
-    console.log(ethRegex.test("0xcF01e56aaAB991B43d4BAfe3467761F035069bDE"));
+    array.push(candidateName);
+    setCandidateNameArray(array);
+    console.log(candidateNameArray);
+    setCandidateName("");
+    setCandidateEthAddress("");
   };
 
   const ballotWinner = () => {
@@ -348,25 +368,31 @@ const MetaMask_Wallet = () => {
                     <Form.Control
                       type="text"
                       placeholder="Add candidate's name here..."
-                      value={candidateForm}
                       onChange={candidateTextHandler}
+                      value={candidateName}
                     />
+
                     <Form.Control
                       type="text"
-                      placeholder="Add candidate's address..."
-                      onChange={ethAddressRegex}
+                      placeholder="Add candidate's address here..."
+                      onChange={candidateEthAddressHandler}
+                      value={candidateEthAddress}
                     />
+
                     <Button
                       type="submit"
                       variant="secondary"
-                      disabled={!isCandidateFormTextValid}
+                      disabled={
+                        !isCandidateFormAddressValid ||
+                        !isCandidateFormTextValid
+                      }
                       onClick={addCandidate}
                     >
                       Add
                     </Button>
                     <Button
                       variant="success"
-                      disabled={candidateArray.length <= 1}
+                      disabled={candidateNameArray.length <= 1}
                       onClick={submitCandidateName}
                     >
                       Submit
@@ -376,7 +402,7 @@ const MetaMask_Wallet = () => {
                 ) : (
                   <div></div>
                 )}
-                {candidateArray.map((element, index) => {
+                {candidateNameArray.map((element, index) => {
                   return (
                     <Card.Text key={index} value={index}>
                       {element}
