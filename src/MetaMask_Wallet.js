@@ -370,6 +370,7 @@ const MetaMask_Wallet = () => {
                       placeholder="Add candidate's name here..."
                       onChange={candidateTextHandler}
                       value={candidateName}
+                      disabled={!isPropsalSubmitted}
                     />
 
                     <Form.Control
@@ -377,6 +378,7 @@ const MetaMask_Wallet = () => {
                       placeholder="Add candidate's address here..."
                       onChange={candidateEthAddressHandler}
                       value={candidateEthAddress}
+                      disabled={!isPropsalSubmitted}
                     />
 
                     <Button
