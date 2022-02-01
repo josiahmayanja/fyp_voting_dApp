@@ -8,6 +8,8 @@ import {
   Stack,
   Button,
   Table,
+  Row,
+  Col,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Ballot from "./contracts/Ballot.json";
@@ -261,7 +263,8 @@ const MetaMask_Wallet = () => {
   };
 
   const addCandidate = () => {
-    const array = candidateNameArray;
+    const tempNameArray = candidateNameArray;
+    const tempAddressArray = candidateAddressArray;
 
     // let doesNameExist = false;
 
@@ -273,9 +276,14 @@ const MetaMask_Wallet = () => {
     //     }
     // }
 
-    array.push(candidateName);
-    setCandidateNameArray(array);
+    tempNameArray.push(candidateName);
+    setCandidateNameArray(tempNameArray);
+
+    tempAddressArray.push(candidateEthAddress);
+    setCandidateAddressArray(tempAddressArray);
+
     console.log(candidateNameArray);
+    console.log(candidateAddressArray);
     setCandidateName("");
     setCandidateEthAddress("");
   };
@@ -409,13 +417,30 @@ const MetaMask_Wallet = () => {
                 ) : (
                   <div></div>
                 )}
-                {candidateNameArray.map((element, index) => {
-                  return (
-                    <Card.Text key={index} value={index}>
-                      {element}
-                    </Card.Text>
-                  );
-                })}
+
+                <Container>
+                  <Row>
+                    <Col>
+                      {candidateNameArray.map((element, index) => {
+                        return (
+                          <Card.Text key={index} value={index}>
+                            {element}
+                          </Card.Text>
+                        );
+                      })}
+                    </Col>
+
+                    <Col>
+                      {candidateAddressArray.map((element, index) => {
+                        return (
+                          <Card.Text key={index} value={index}>
+                            {element}
+                          </Card.Text>
+                        );
+                      })}
+                    </Col>
+                  </Row>
+                </Container>
               </Card.Body>
             </Card>
 
