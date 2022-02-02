@@ -63,8 +63,6 @@ const MetaMask_Wallet = () => {
 
       const currentAccount = defaultAccount;
 
-      console.log(contractAddress);
-
       let factory;
 
       if (contractAddress) {
@@ -95,7 +93,6 @@ const MetaMask_Wallet = () => {
       console.log(Array.isArray(obj));
 
       setTable(obj);
-      ballotWinner(obj);
       setVoteNumber("0");
       accountChangedHandler(currentAccount);
       console.log("Successfully retreived information");
@@ -121,13 +118,16 @@ const MetaMask_Wallet = () => {
         signer
       );
 
-      const contract = await factory.deploy(candidateNameArray, ballotProposal);
+      const contract = await factory.deploy(
+        candidateNameArray,
+        ballotProposal,
+        candidateAddressArray
+      );
 
       const tx = await contract.deployed();
 
       console.log("Contract Address: ", tx.address);
       setContractAddress(tx.address);
-      console.log(contractAddress);
       accountChangedHandler(currentAccount);
       console.log("...Deployment successful");
       getCandidates(tx.address);
@@ -288,35 +288,6 @@ const MetaMask_Wallet = () => {
     setCandidateEthAddress("");
   };
 
-  const ballotWinner = () => {
-    let highest = 0;
-    let candidate = [];
-
-    //find highest vote tally
-    table.array.forEach((element) => {
-      if (element[1] > highest) {
-        highest = element[1];
-      }
-    });
-
-    //find candiadate(s) that match tally
-    table.array.forEach((element) => {
-      if (element[1] == highest) {
-        candidate.push(element[0]);
-      }
-    });
-
-    console.log(candidate.length);
-
-    setWinner(candidate);
-
-    // if (candidate.length > 1) {
-    //   return console.log(candidate[0]);
-    // } else {
-    //   return console.log("tied at: ", candidate);
-    // }
-  };
-
   return (
     <div className="Wallet">
       <Navbar bg="dark" variant="dark">
@@ -462,10 +433,6 @@ const MetaMask_Wallet = () => {
               <br />
               <div className="text-center">
                 Contract Address: {contractAddress}
-              </div>
-              <div className="text-center">
-                The winner of the ballot is: {winner}
-                {/* {ballotWinner} . */}
               </div>
               <br />
 

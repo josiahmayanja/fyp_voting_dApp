@@ -15,6 +15,7 @@ contract Ballot {
 
     mapping(address => bool) public voters;
     mapping(uint256 => Candidate) public candidates;
+    mapping(address => bool) public excludedAddresses;
 
     uint256 public candidatesCount;
 
@@ -24,7 +25,11 @@ contract Ballot {
 
     address public chairperson;
 
-    constructor(string[] memory _candidateNames, string memory _proposalName) {
+    constructor(
+        string[] memory _candidateNames,
+        string memory _proposalName,
+        address[] memory _candidateAddresses
+    ) {
         chairperson = msg.sender;
         proposalName = _proposalName;
         length = _candidateNames.length;
@@ -32,6 +37,14 @@ contract Ballot {
         for (uint256 i = 0; i < _candidateNames.length; i++) {
             addCandidate(_candidateNames[i]);
         }
+
+        for (uint256 i = 0; i < _candidateAddresses.length; i++) {
+            addCandidateAddress(_candidateAddresses[i]);
+        }
+    }
+
+    function addCandidateAddress(address _address) public {
+        voters[_address] = true;
     }
 
     function addCandidate(string memory _name) public {
