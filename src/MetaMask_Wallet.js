@@ -79,14 +79,10 @@ const MetaMask_Wallet = () => {
       let obj = [];
 
       tx[1].forEach((element) => tally.push(element.toNumber()));
-      console.log(tally);
 
       tx[0].forEach((element) =>
         obj.push([element, tally[tx[0].indexOf(element)]])
       );
-      console.log(obj);
-
-      console.log(Array.isArray(obj));
 
       setTable(obj);
       setVoteNumber("0");
@@ -137,15 +133,10 @@ const MetaMask_Wallet = () => {
 
       const currentAccount = defaultAccount;
 
-      console.log(contractAddress);
-
       const signer = new ethers.providers.Web3Provider(
         window.ethereum
       ).getSigner();
       let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
-
-      console.log(parseInt(voteNumber));
-      console.log(typeof parseInt(voteNumber));
 
       const tx = await factory.vote(parseInt(voteNumber));
       await tx.wait();
@@ -275,9 +266,6 @@ const MetaMask_Wallet = () => {
 
     tempAddressArray.push(candidateEthAddress);
     setCandidateAddressArray(tempAddressArray);
-
-    console.log(candidateNameArray);
-    console.log(candidateAddressArray);
 
     setCandidateName("");
     setCandidateEthAddress("");
