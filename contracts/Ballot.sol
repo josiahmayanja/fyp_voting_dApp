@@ -61,12 +61,17 @@ contract Ballot {
         uint256[] memory voteCounts = new uint256[](candidatesCount);
         for (uint256 i = 0; i < candidatesCount; i++) {
             names[i] = candidates[i].name;
-            voteCounts[i] = candidates[i].voteTally;
+            voteCounts[i] = candidates[i].voteTally; //
         }
         return (names, voteCounts);
     }
 
     function vote(uint256 _candidateId) public {
+        // require(!excludedAddresses[msg.sender]);
+        // require(msg.sender != chairperson);
+        require(!voters[msg.sender]);
+        //require(_candidateId > 0 && _candidateId <= candidatesCount);
+
         voters[msg.sender] = true;
         candidates[_candidateId].voteTally++;
     }

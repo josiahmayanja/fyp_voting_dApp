@@ -44,17 +44,13 @@ const MetaMask_Wallet = () => {
   const [isCandidateFormAddressValid, setIsCandidateFormAddressValid] =
     useState(false);
 
-  const [isCandidateInputsValid, setIsCandidateInputsValid] = useState(false);
-
   const [isCandidateFormSubmitted, setIsCandidateFormSubmitted] =
     useState(false);
 
   //Table
 
   const [table, setTable] = useState([]);
-
   const [voteNumber, setVoteNumber] = useState("");
-
   const [isContractDeployed, setIsContractDeployed] = useState(false);
 
   const getCandidates = async (txAddress) => {
@@ -100,8 +96,6 @@ const MetaMask_Wallet = () => {
       console.log(e.message);
     }
   };
-
-  const [winner, setWinner] = [];
 
   const deploySmartContract = async () => {
     try {
@@ -212,6 +206,8 @@ const MetaMask_Wallet = () => {
 
   window.ethereum.on("chainChanged", chainChangedHandler);
 
+  window.ethereum.removeListener("accountsChanged", accountChangedHandler);
+
   const propsalTextHandler = (event) => {
     if (typeof event.target.value === "string" && event.target.value) {
       setBallotProposal(event.target.value);
@@ -257,8 +253,6 @@ const MetaMask_Wallet = () => {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
-    console.log(typeof e.target.value);
     setVoteNumber(e.target.value);
   };
 
@@ -284,8 +278,11 @@ const MetaMask_Wallet = () => {
 
     console.log(candidateNameArray);
     console.log(candidateAddressArray);
+
     setCandidateName("");
     setCandidateEthAddress("");
+    setIsCandidateFormAddressValid(false);
+    setIsCandidateFormTextValid(false);
   };
 
   return (
