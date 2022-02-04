@@ -49,6 +49,7 @@ const MetaMask_Wallet = () => {
 
   // table setup useStates
   const [table, setTable] = useState([]);
+  const [officialBallotName, setOfficialBallotName] = useState(null);
   const [voteNumber, setVoteNumber] = useState("");
 
   // async methods
@@ -83,6 +84,7 @@ const MetaMask_Wallet = () => {
         obj.push([element, tally[tx[0].indexOf(element)]])
       );
 
+      setOfficialBallotName(tx[2]);
       setTable(obj);
       setVoteNumber("0");
       accountChangedHandler(currentAccount);
@@ -194,9 +196,6 @@ const MetaMask_Wallet = () => {
 
   // ballot form handlers
   const propsalTextHandler = (event) => {
-    console.log(event.target.value);
-    console.log(typeof event.target.value);
-    console.log(event.target.value.trim().length);
     if (
       typeof event.target.value === "string" &&
       event.target.value &&
@@ -312,6 +311,7 @@ const MetaMask_Wallet = () => {
   window.ethereum.on("accountsChanged", accountChangedHandler);
   window.ethereum.on("chainChanged", chainChangedHandler);
   window.ethereum.removeListener("accountsChanged", accountChangedHandler);
+  window.ethereum.removeListener("chainChanged", chainChangedHandler);
 
   return (
     <div className="Wallet">
@@ -458,6 +458,9 @@ const MetaMask_Wallet = () => {
               <br />
               <div className="text-center">
                 Contract Address: {contractAddress}
+              </div>
+              <div className="text-center">
+                Official Ballot Name: {officialBallotName}
               </div>
               <br />
 

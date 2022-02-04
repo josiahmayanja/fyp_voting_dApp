@@ -57,15 +57,19 @@ contract Ballot {
     function getCandidates()
         external
         view
-        returns (string[] memory, uint256[] memory)
+        returns (
+            string[] memory,
+            uint256[] memory,
+            string memory
+        )
     {
         string[] memory names = new string[](candidatesCount);
         uint256[] memory voteCounts = new uint256[](candidatesCount);
         for (uint256 i = 0; i < candidatesCount; i++) {
             names[i] = candidates[i].name;
-            voteCounts[i] = candidates[i].voteTally; //
+            voteCounts[i] = candidates[i].voteTally;
         }
-        return (names, voteCounts);
+        return (names, voteCounts, proposalName);
     }
 
     function vote(uint256 _candidateId) public {
