@@ -41,6 +41,8 @@ contract Ballot {
         for (uint256 i = 0; i < _candidateAddresses.length; i++) {
             addCandidateAddress(_candidateAddresses[i]);
         }
+
+        addCandidateAddress(msg.sender);
     }
 
     function addCandidateAddress(address _address) public {
@@ -67,10 +69,9 @@ contract Ballot {
     }
 
     function vote(uint256 _candidateId) public {
-        // require(!excludedAddresses[msg.sender]);
-        // require(msg.sender != chairperson);
+        require(!excludedAddresses[msg.sender]);
         require(!voters[msg.sender]);
-        //require(_candidateId > 0 && _candidateId <= candidatesCount);
+        require(_candidateId >= 0 && _candidateId < candidatesCount);
 
         voters[msg.sender] = true;
         candidates[_candidateId].voteTally++;

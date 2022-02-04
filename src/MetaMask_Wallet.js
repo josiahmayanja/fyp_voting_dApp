@@ -15,44 +15,43 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Ballot from "./contracts/Ballot.json";
 
 const MetaMask_Wallet = () => {
-  //Metamask
+  // metamask handling useStates
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [connectButtonText, setConnectButtonText] = useState("Connect Wallet");
-
   const [isMetamaskConnected, setIsMetamaskConnected] = useState(false);
   const [contractAddress, setContractAddress] = useState(null);
 
-  //Ballot Form
+  // ballot proposal form useStates
   const [ballotProposal, setBallotProposal] = useState("");
   const [isProposalFormTextValid, setIsProposalTextValid] = useState(false);
   const [isPropsalSubmitted, setIsProposalSubmitted] = useState(false);
 
-  //candidate arrays
+  // candidate detail arrays useStates
   const [candidateNameArray, setCandidateNameArray] = useState([]);
   const [candidateAddressArray, setCandidateAddressArray] = useState([]);
 
-  //candidate forms
+  // candidate details useStates
   const [candidateName, setCandidateName] = useState("");
   const [candidateEthAddress, setCandidateEthAddress] = useState("");
 
-  //canidate form validations
+  // canidate form validations useStates
   const [isCandidateFormTextValid, setIsCandidateFormTextValid] =
     useState(false);
-
   const [isCandidateFormAddressValid, setIsCandidateFormAddressValid] =
     useState(false);
-
   const [isCandidateFormSubmitted, setIsCandidateFormSubmitted] =
     useState(false);
 
-  //Table
-
-  const [table, setTable] = useState([]);
-  const [voteNumber, setVoteNumber] = useState("");
+  // deploying contract useState
   const [isContractDeployed, setIsContractDeployed] = useState(false);
 
+  // table setup useStates
+  const [table, setTable] = useState([]);
+  const [voteNumber, setVoteNumber] = useState("");
+
+  // async methods
   const getCandidates = async (txAddress) => {
     try {
       console.log("Retreive Candidate information from deployed contract...");
@@ -149,6 +148,7 @@ const MetaMask_Wallet = () => {
     }
   };
 
+  // metamask methods
   const connectWalletHandler = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       console.log("MetaMask Here!");
@@ -183,7 +183,6 @@ const MetaMask_Wallet = () => {
     window.ethereum
       .request({ method: "eth_getBalance", params: [address, "latest"] })
       .then((balance) => {
-        console.log(ethers.utils.formatEther(balance));
         setUserBalance(ethers.utils.formatEther(balance));
       });
   };
@@ -193,14 +192,16 @@ const MetaMask_Wallet = () => {
     connectWalletHandler();
   };
 
-  window.ethereum.on("accountsChanged", accountChangedHandler);
-
-  window.ethereum.on("chainChanged", chainChangedHandler);
-
-  window.ethereum.removeListener("accountsChanged", accountChangedHandler);
-
+  // ballot form handlers
   const propsalTextHandler = (event) => {
-    if (typeof event.target.value === "string" && event.target.value) {
+    console.log(event.target.value);
+    console.log(typeof event.target.value);
+    console.log(event.target.value.trim().length);
+    if (
+      typeof event.target.value === "string" &&
+      event.target.value &&
+      event.target.value.trim().length !== 0
+    ) {
       setBallotProposal(event.target.value);
       setIsProposalTextValid(true);
     } else {
@@ -213,8 +214,30 @@ const MetaMask_Wallet = () => {
     setCandidateName(event.target.value);
 
     if (typeof event.target.value === "string" && event.target.value) {
-      setIsCandidateFormTextValid(true);
+      let doesNameExist = false;
+
+      if (candidateNameArray.length > 0) {
+        for (let index = 0; index < candidateNameArray.length; index++) {
+          if (
+            event.target.value.toLowerCase().trim().replace(/\s\s+/g, " ") ===
+            candidateNameArray[index]
+              .toLowerCase()
+              .trim()
+              .replace(/\s\s+/g, " ")
+          ) {
+            console.error("Candidate name already exists in ballot!");
+            doesNameExist = true;
+          }
+        }
+      }
+
+      if (!doesNameExist) {
+        setIsCandidateFormTextValid(true);
+      } else {
+        setIsCandidateFormTextValid(false);
+      }
     } else {
+      console.error("Name input is NOT a valid input!");
       setIsCandidateFormTextValid(false);
     }
   };
@@ -226,8 +249,30 @@ const MetaMask_Wallet = () => {
     setCandidateEthAddress(event.target.value);
 
     if (isEthValid && event.target.value) {
-      setIsCandidateFormAddressValid(true);
-      console.log(isCandidateFormAddressValid);
+      let doesEthAddressExist = false;
+
+      if (candidateAddressArray.length > 0) {
+        for (let index = 0; index < candidateAddressArray.length; index++) {
+          if (
+            event.target.value.toLowerCase() ===
+            candidateAddressArray[index].toLowerCase()
+          ) {
+            console.error("Candidate address already exists in ballot!");
+            doesEthAddressExist = true;
+          }
+        }
+      }
+
+      if (event.target.value.toLowerCase() === defaultAccount) {
+        console.error("Candidate cannot have same address as chairman!");
+        doesEthAddressExist = true;
+      }
+
+      if (!doesEthAddressExist) {
+        setIsCandidateFormAddressValid(true);
+      } else {
+        setIsCandidateFormAddressValid(false);
+      }
     } else {
       setIsCandidateFormAddressValid(false);
     }
@@ -251,16 +296,6 @@ const MetaMask_Wallet = () => {
     const tempNameArray = candidateNameArray;
     const tempAddressArray = candidateAddressArray;
 
-    // let doesNameExist = false;
-
-    // while (doesNameExist == false) {
-    //     for (let index = 0; index < array.length; index++) {
-    //       if (array[index] == candidateForm) {
-    //         doesNameExist = true;
-    //       }
-    //     }
-    // }
-
     tempNameArray.push(candidateName);
     setCandidateNameArray(tempNameArray);
 
@@ -272,6 +307,11 @@ const MetaMask_Wallet = () => {
     setIsCandidateFormAddressValid(false);
     setIsCandidateFormTextValid(false);
   };
+
+  // metamask event handling
+  window.ethereum.on("accountsChanged", accountChangedHandler);
+  window.ethereum.on("chainChanged", chainChangedHandler);
+  window.ethereum.removeListener("accountsChanged", accountChangedHandler);
 
   return (
     <div className="Wallet">
