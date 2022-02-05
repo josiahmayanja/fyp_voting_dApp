@@ -10,6 +10,7 @@ import {
   Table,
   Row,
   Col,
+  Spinner,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Ballot from "./contracts/Ballot.json";
@@ -46,16 +47,20 @@ const MetaMask_Wallet = () => {
 
   // deploying contract useState
   const [isContractDeployed, setIsContractDeployed] = useState(false);
+  const [isContractSpinnerActive, setIsContractSpinnerActive] = useState(false);
+  const [isDeployActive, setIsDeployActive] = useState(false);
 
   // table setup useStates
   const [table, setTable] = useState([]);
   const [officialBallotName, setOfficialBallotName] = useState(null);
   const [voteNumber, setVoteNumber] = useState("");
+  const [isVoteSpinnerActive, setIsVoteSpinnerActive] = useState(false);
+  const [isVoteActive, setIsVoteActive] = useState(false);
 
   // async methods
   const getCandidates = async (txAddress) => {
     try {
-      console.log("Retreive Candidate information from deployed contract...");
+      console.log("Retreiving candidate information from deployed contract...");
 
       const currentAccount = defaultAccount;
 
@@ -88,7 +93,7 @@ const MetaMask_Wallet = () => {
       setTable(obj);
       setVoteNumber("0");
       accountChangedHandler(currentAccount);
-      console.log("Successfully retreived information");
+      console.log("...Successfully retreived information");
     } catch (e) {
       console.log(e.message);
     }
@@ -97,6 +102,7 @@ const MetaMask_Wallet = () => {
   const deploySmartContract = async () => {
     try {
       console.log("Deploying smart contract...");
+      setIsDeployActive(true);
 
       let currentAccount = defaultAccount;
 
@@ -114,16 +120,40 @@ const MetaMask_Wallet = () => {
         ballotProposal,
         candidateAddressArray
       );
+      const startDate = new Date();
+
+      setIsContractSpinnerActive(true);
 
       const tx = await contract.deployed();
 
-      console.log("Contract Address: ", tx.address);
+      const endDate = new Date();
+      const seconds = (endDate - startDate) / 1000;
+
+      console.log(
+        "...Deployment successful",
+        "\n",
+        "Contract Address: " + tx.address
+      );
+
+      console.log(
+        "It took approximately " +
+          seconds +
+          " seconds to mine the contract on the Rinkeby Testnet"
+      );
+
+      console.log(
+        "Contract transaction hash: " + tx.deployTransaction.hash,
+        "\n(Insert hash into the Rinkeby Testnet Explorer at https://rinkeby.etherscan.io/ to view transaction details)"
+      );
+
       setContractAddress(tx.address);
       accountChangedHandler(currentAccount);
-      console.log("...Deployment successful");
       getCandidates(tx.address);
       setIsContractDeployed(true);
+      setIsContractSpinnerActive(false);
     } catch (e) {
+      setIsDeployActive(false);
+      setIsContractSpinnerActive(false);
       console.log(e.message);
     }
   };
@@ -131,6 +161,7 @@ const MetaMask_Wallet = () => {
   const voteCandidate = async () => {
     try {
       console.log("Adding vote to smart contract...");
+      setIsVoteActive(true);
 
       const currentAccount = defaultAccount;
 
@@ -140,13 +171,38 @@ const MetaMask_Wallet = () => {
       let factory = new ethers.Contract(contractAddress, Ballot.abi, signer);
 
       const tx = await factory.vote(parseInt(voteNumber));
-      await tx.wait();
 
+      const startDate = new Date();
+
+      setIsVoteSpinnerActive(true);
+
+      const txLog = await tx.wait();
+
+      const endDate = new Date();
+      const seconds = (endDate - startDate) / 1000;
+
+      console.log("...Vote successful.");
+
+      console.log(
+        "It took approximately " +
+          seconds +
+          " seconds to mine the vote on the deplyed contract on the Rinkeby Testnet"
+      );
+
+      console.log(
+        "Vote transaction hash: " + txLog.transactionHash,
+        "\n(Insert hash into the Rinkeby Testnet Explorer at https://rinkeby.etherscan.io/ to view transaction details)"
+      );
+
+      setIsVoteSpinnerActive(false);
       accountChangedHandler(currentAccount);
-      console.log("Vote successful.");
       getCandidates();
+      setIsVoteActive(false);
     } catch (e) {
-      console.log(e.message);
+      setIsVoteActive(false);
+      setIsVoteSpinnerActive(false);
+      console.error(e.message);
+      console.error("Ineligible Vote");
     }
   };
 
@@ -441,13 +497,21 @@ const MetaMask_Wallet = () => {
             </Card>
 
             <br />
+
             <div className="text-center">
               <Button
                 onClick={deploySmartContract}
                 variant="warning"
-                disabled={!isCandidateFormSubmitted}
+                disabled={!isCandidateFormSubmitted || isDeployActive}
               >
-                Deploy Smart Contract
+                {!isContractSpinnerActive ? (
+                  <div>Deploy Smart Contract on Rinkeby Testnet</div>
+                ) : (
+                  <div>
+                    <Spinner animation="border" />
+                    <div> Mining Contract....</div>
+                  </div>
+                )}
               </Button>{" "}
             </div>
           </div>
@@ -457,7 +521,7 @@ const MetaMask_Wallet = () => {
               <Card.Header>Official Ballot</Card.Header>
               <br />
               <div className="text-center">
-                Contract Address: {contractAddress}
+                Rinkeby Contract Address: {contractAddress}
               </div>
               <div className="text-center">
                 Official Ballot Name: {officialBallotName}
@@ -511,8 +575,19 @@ const MetaMask_Wallet = () => {
               <br />
 
               <div>
-                <Button variant="success" onClick={voteCandidate}>
-                  Vote
+                <Button
+                  variant="success"
+                  onClick={voteCandidate}
+                  disabled={isVoteActive}
+                >
+                  {!isVoteSpinnerActive ? (
+                    <div>Vote</div>
+                  ) : (
+                    <div>
+                      <Spinner animation="border" />
+                      <div> Mining Vote....</div>
+                    </div>
+                  )}
                 </Button>{" "}
               </div>
 
