@@ -46,7 +46,7 @@ contract Ballot {
     }
 
     function addCandidateAddress(address _address) public {
-        voters[_address] = true;
+        excludedAddresses[_address] = true;
     }
 
     function addCandidate(string memory _name) public {
