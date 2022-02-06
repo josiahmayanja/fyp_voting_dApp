@@ -72,6 +72,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## Running Unit Tests
 
 In the project the unit test have been written in the './tests/ballot.js' file in the Mocha framework.
-To run, open terminal go to the project folder 'cd fyp_dapp' and type in  ### `truffle test` and press Enter. 
+To run, open terminal go to the project folder 'cd fyp_dapp' and type in `truffle test` and press `Enter`. 
 The terminal will then run the unit test.
 
