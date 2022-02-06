@@ -6,5 +6,4 @@ module.exports = function (deployer, network, accounts) {
   const addressArray = [accounts[1], accounts[2]];
 
   deployer.deploy(Ballot, candidateNameArray, proposalName, addressArray);
-  //deployer.deploy();
 };

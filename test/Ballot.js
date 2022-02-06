@@ -1,7 +1,5 @@
 var Ballot = artifacts.require(" ./Ballot.sol");
 
-//uncomment commented lines in '2_deploy_contracts.js' file to run 'truffle test' in terminal
-
 contract("Ballot", (accounts) => {
   it("initializes with two candidates", async function () {
     return Ballot.deployed()
@@ -21,6 +19,27 @@ contract("Ballot", (accounts) => {
       .then(function (name) {
         const operand = typeof name;
         assert.equal(operand, "string");
+      });
+  });
+
+  it("initializes with a valid ethereum addresses", async function () {
+    return Ballot.deployed()
+      .then(function (instance) {
+        ballotInstance = instance;
+        return ballotInstance.excludedAddresses(accounts[1]);
+      })
+      .then(function (address1) {
+        const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+        const isEthValid = ethRegex.test(accounts[1]);
+        assert.equal(address1, true, "candidate 1 account is excluded");
+        assert.equal(isEthValid, true, "candidate 1 eth address is valid");
+        return ballotInstance.excludedAddresses(accounts[2]);
+      })
+      .then(function (address2) {
+        assert.equal(address2, true, "candidate 2 account is excluded");
+        const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+        const isEthValid = ethRegex.test(accounts[2]);
+        assert.equal(isEthValid, true, "candidate 2 eth address is valid");
       });
   });
 
@@ -68,7 +87,7 @@ contract("Ballot", (accounts) => {
       });
   });
 
-  it("stops a candidate from voting for themselves ", async function () {
+  it("stops a candidate from casting a vote for themselves ", async function () {
     return Ballot.deployed()
       .then(function (instance) {
         ballotInstance = instance;
@@ -117,7 +136,7 @@ contract("Ballot", (accounts) => {
       });
   });
 
-  it("throws an exception for invalid candidates", function () {
+  it("throws an exception for casting a vote for invalid candidates", async function () {
     return Ballot.deployed()
       .then(function (instance) {
         ballotInstance = instance;
@@ -142,7 +161,7 @@ contract("Ballot", (accounts) => {
       });
   });
 
-  it("throws an exception for double voting", function () {
+  it("throws an exception for double voting from a voter", async function () {
     return Ballot.deployed()
       .then(function (instance) {
         ballotInstance = instance;
@@ -159,7 +178,6 @@ contract("Ballot", (accounts) => {
       .then(function (candidate) {
         const voteTally = candidate[2];
         assert.equal(voteTally, 1, "accepts first vote");
-        //Try to vote again
         return ballotInstance.vote(candidateId, { from: accounts[5] });
       })
       .then(assert.fail)
@@ -181,33 +199,3 @@ contract("Ballot", (accounts) => {
       });
   });
 });
-
-//       it("throws an exception for double voting", function() {
-//         return Ballot.deployed().then(function(instance) {
-//           ballotInstance = instance;
-//           candidateId = 1;
-//           return ballotInstance.vote(candidateId, { from: accounts[5] });
-//         }).then(function() {
-//           return ballotInstance.voters(accounts[1]);
-//         }).then(function(voted) {
-//           assert(voted, true, "the voter was marked as voted");
-//           return ballotInstance.candidates(candidateId);
-//         }).then(function(candidate) {
-//           const voteTally = candidate[2];
-//           assert.equal(voteTally, 1, "accepts first vote");
-//          //Try to vote again
-//           return ballotInstance.vote(candidateId, { from: accounts[5] });
-//         }).then(assert.fail).catch(function(error) {
-//           assert(error.message.indexOf('revert') >= 0, "error message must contain revert");
-//           return ballotInstance.candidates(0);
-//         }).then(function(candidate1) {
-//           const voteTally = candidate1[2];
-//           assert.equal(voteTally, 1, "candidate 1 did not receive any votes");
-//           return ballotInstance.candidates(candidateId);
-//         }).then(function(candidate2) {
-//           const voteTally = candidate2[2];
-//           assert.equal(voteTally, 1, "candidate 2 did not receive any votes");
-//         });
-//       });
-
-// });
