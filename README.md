@@ -68,3 +68,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Running Unit Tests
+
+In the project the unit test have been written in the './tests/ballot.js' file in the Mocha framework.
+To run, open terminal go to the project folder 'cd fyp_dapp' and type in  'truffle test' and press Enter. The terminal will then run the unit test.
+
