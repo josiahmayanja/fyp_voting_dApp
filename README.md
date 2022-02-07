@@ -24,6 +24,7 @@ foobar.pluralize('goose')
 
 # returns 'phenomenon'
 foobar.singularize('phenomena')
+```
 
 ## How to run on local Ganache
 
@@ -73,9 +74,6 @@ Block Explorer URL(Optional): (Leave empty!)
 ```
 
 And now your wallet will be configured to your local host.
-
-
-```
 
 
 ## Available Scripts
