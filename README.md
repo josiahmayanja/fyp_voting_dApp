@@ -11,20 +11,19 @@ Hi! This is my final year project. The objective of the project is to create a s
 ```
 - npm:  >=8.1.2
 - node: >16.13.1
-- A Metamask account
-- Download Metamask on your browser
-- A node
+- Download and make a metamask account on your browser
+- A node to connect dApp to blockchain
 ```
 
-Make a Metamask Account at https://metamask.io/
+Download and make a Metamask Account at https://metamask.io/
 Go into the `secrets.js` file, which will be empty and inserted your 12-worded metamask mnemonic password.
 
-Also you'll want to have your own node, so make a Moralis account at [https://moralis.io/] (hhttps://moralis.io/) and go to the sppedy nodes section. Click on ETH network for an endpoint and copy the Ropsten URL. It will look like this:
+Also you'll want to have your own node, so make a Moralis account at https://moralis.io/ and go to the sppedy nodes section. Click on 'ETH network' for an endpoint and copy the Rinkeby URL. It will look like this:
 
 ```
-https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/ropsten
+https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/rinkeby
 ```
- and  replace it in rinekeby network export in `truffle-config.js`
+ and  replace it in rinekeby network export in the url section in `truffle-config.js`
 
 ```javascript
  rinkeby: {
