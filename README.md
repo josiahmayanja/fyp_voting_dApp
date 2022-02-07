@@ -2,6 +2,29 @@
 
 Hi! This is my final year project. The objective of the project is to create a secure decentralised system for voting that will combat electoral fraud using the blockchain. I built a site that takes a number of candidate names' alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voters can then cast a vote to their desired candidate onto the ballot table.
 
+
+## How to Run the Project
+
+After cloning the project, to the run the application go into the terminal and find the project folder and type:
+
+```
+$ npm run start
+```
+
+This will deploy the app at [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+```
+import foobar
+
+# returns 'words'
+foobar.pluralize('word')
+
+# returns 'geese'
+foobar.pluralize('goose')
+
+# returns 'phenomenon'
+foobar.singularize('phenomena')
+
 ## How to run on local Ganache
 
 To run the application to deploy transcations onto local ganache make sure the Ganache suite is open on the workspace and your looking to deploy on configure your server settings like this:
@@ -52,28 +75,6 @@ Block Explorer URL(Optional): (Leave empty!)
 And now your wallet will be configured to your local host.
 
 
-
-## How to Run the Project
-
-After cloning the project, to the run the application go into the terminal and find the project folder and type:
-
-```
-$ npm run start
-```
-
-This will deploy the app at [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-```
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
 ```
 
 
