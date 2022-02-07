@@ -60,7 +60,7 @@ Currency Symbol(Optional): ETH
 Block Explorer URL(Optional): (Leave empty!)
 ```
 
-And now your wallet will be configured to your local host.
+And now your wallet will be configured to your local host network.
 
 
 ## Available Scripts
@@ -87,4 +87,3 @@ To get a deeper analysis, type in:
   $   truffle test --stacktrace-extra
 ```
 (This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
-
