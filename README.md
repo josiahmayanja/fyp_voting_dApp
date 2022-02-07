@@ -1,5 +1,5 @@
 # Voting Web-app on the Rinkeby Network
-Hi! This is a my final year project. The objective of the project is to create a secure decentralised system for voting in the aid of combatting faulty voting using the blockchain. I build a website that takes a number of candidates names alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voter can then make a vote to their desire candidate into a ballt table.
+Hi! This is my final year project. The objective of the project is to create a secure decentralised system for voting that will combat electoral fraud using the blockchain. I built a site that takes a number of candidate names' alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voters can then cast a vote to their desired candidate onto the ballot table.
 
 
 
