@@ -105,6 +105,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+You can contact me by sending to this email: jmayanja.xyz@gmail.com
+
 ## Running Unit Tests
 
 In the project the unit test have been written in the `ballot.js` file located in the `test` folder in the Mocha framework.
