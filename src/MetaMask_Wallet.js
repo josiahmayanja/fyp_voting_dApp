@@ -373,7 +373,7 @@ const MetaMask_Wallet = () => {
     <div className="Wallet">
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#">E-Voting Dapp</Navbar.Brand>
+          <Navbar.Brand href="#">E-Voting dApp</Navbar.Brand>
         </Container>
       </Navbar>
 
