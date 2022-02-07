@@ -2,7 +2,8 @@
 
 Hi! This is my final year project. The objective of the project is to create a secure decentralised system for voting that will combat electoral fraud using the blockchain. I built a site that takes a number of candidate names' alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voters can then cast a vote to their desired candidate onto the ballot table.
 
-https://img.shields.io/github/issues/jmayanja-xyz/fyp_dapp
+[![GitHub issues](https://img.shields.io/github/issues/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_dapp/issues)
+
 ## Prerequisites
 ```
 npm:  >=8.1.2
@@ -67,10 +68,6 @@ Block Explorer URL(Optional): (Leave empty!)
 ```
 
 And now your wallet will be configured to your local host network.
-
-
-## Available Scripts
-
 
 #
 ## Contributing
