@@ -101,8 +101,15 @@ Please make sure to update tests as appropriate.
 
 In the project the unit test have been written in the './tests/ballot.js' file in the Mocha framework.
 
-To run, open terminal go to the project folder 'cd fyp_dapp' and type in `truffle test` and press `Enter`. 
+To run, open terminal go to the project folder type in
+```
+  $   truffle test
+``` 
 The terminal will then run the unit test.
 
-To get a deeper analysis of the test type in `truffle test --stacktrace-extra`. (This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
+To get a deeper analysis, type in:
+```
+  $   truffle test --stacktrace-extra
+```
+(This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
 
