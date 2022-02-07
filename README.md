@@ -2,10 +2,10 @@
 
 Hi! This is my final year project. The objective of the project is to create a secure decentralised system for voting that will combat electoral fraud using the blockchain. I built a site that takes a number of candidate names' alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voters can then cast a vote to their desired candidate onto the ballot table. I build the project using the react framework with Javscript, HTML, CSS. For the ethereum smart contact framework I used Truffle framework and developed them using Solidity and for the unit tests I used Javascript.
 
-[![GitHub issues](https://img.shields.io/github/issues/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/issues)
-[![GitHub license](https://img.shields.io/github/license/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_voting_dApp)
-[![GitHub forks](https://img.shields.io/github/forks/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/network)
-[![GitHub stars](https://img.shields.io/github/stars/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/issues)
+[![GitHub license](https://img.shields.io/github/license/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp)
+[![GitHub forks](https://img.shields.io/github/forks/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/network)
+[![GitHub stars](https://img.shields.io/github/stars/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/stargazers)
 
 ## Prerequisites
 ```
