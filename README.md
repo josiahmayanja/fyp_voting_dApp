@@ -13,19 +13,6 @@ $ npm run start
 
 This will deploy the app at [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-```
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
-
 ## How to run on local Ganache
 
 To run the application to deploy transcations onto local ganache make sure the Ganache suite is open on the workspace and your looking to deploy on configure your server settings like this:
