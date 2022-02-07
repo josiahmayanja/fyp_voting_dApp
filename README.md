@@ -9,13 +9,34 @@ Hi! This is my final year project. The objective of the project is to create a s
 
 ## Prerequisites
 ```
-npm:  >=8.1.2
-node: >16.13.1
+- npm:  >=8.1.2
+- node: >16.13.1
+- A Metamask account
+- A node
+```
+
+Go into the `secrets.js` file, which will be empty and inserted your 12-worded metamask mnemonic password.
+
+Also you'll want to have your own node, so make a Moralis account at [https://moralis.io/] (hhttps://moralis.io/) and go to the sppedy nodes section. Click on ETH network for an endpoint and copy the Ropsten URL. It will look like this: https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/ropsten and  replace it in rinekeby network export in `truffle-config.js`
+
+```javascript
+ rinkeby: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://speedy-nodes-nyc.moralis.io/043306717a87e578f84a1f07/eth/rinkeby`
+        ),
+      network_id: 4, // rinkeby's id
+      gas: 5500000, // rinkeby has a lower block limit than mainnet
+      confirmations: 2, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+    },
 ```
 
 ## How to Run the Project
 
-After cloning the project, go to `secrets.js` which will be empty and inserted your 12-worded metamask mnemonic. After saving to run the application go into the terminal and find the project folder and type:
+After cloning the project, to run the application go into the terminal and find the project folder and type:
 
 ```
 $ npm run start
