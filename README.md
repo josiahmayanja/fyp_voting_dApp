@@ -39,6 +39,7 @@ https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/rinkeby
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
     },
 ```
+When you'll be doing transactions via Metamask you'll need test ether to do them for rinkeby as a default account will have 0 ETH. The best site to get some is from https://faucets.chain.link/rinkeby. And the site to see the transction in details is on https://rinkeby.etherscan.io all you need is the transcation hash that will be given to you in the console log to find it.
 
 ## How to Run the Project
 
