@@ -4,6 +4,7 @@ Hi! This is my final year project. The objective of the project is to create a s
 
 [![GitHub issues](https://img.shields.io/github/issues/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_dapp/issues)
 [![GitHub license](https://img.shields.io/github/license/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_dapp)
+[![GitHub forks](https://img.shields.io/github/forks/jmayanja-xyz/fyp_dapp)](https://github.com/jmayanja-xyz/fyp_dapp/network)
 
 ## Prerequisites
 ```
