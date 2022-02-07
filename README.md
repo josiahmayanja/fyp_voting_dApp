@@ -7,15 +7,11 @@ https://img.shields.io/github/issues/jmayanja-xyz/fyp_dapp
 ```
 npm:  >=8.1.2
 node: >16.13.1
-
 ```
-
-
-
 
 ## How to Run the Project
 
-After cloning the project, to the run the application go into the terminal and find the project folder and type:
+After cloning the project, go to `secrets.js` which will be empty and inserted your 12-worded metamask mnemonic. After saving to run the application go into the terminal and find the project folder and type:
 
 ```
 $ npm run start
