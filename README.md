@@ -80,7 +80,7 @@ Please make sure to update tests as appropriate.
 
 ## Running Unit Tests
 
-In the project the unit test have been written in the '`ballot.js` file located in the `test` in the Mocha framework.
+In the project the unit test have been written in the `ballot.js` file located in the `test` folder in the Mocha framework.
 
 To run, open terminal go to the project folder type in
 ```
