@@ -41,12 +41,13 @@ and commenting out this out.
 
 On the MetaMask Wallet in your browser if you haven't already got localhost configured go to Settings > Networks > Add Networks and type in the following:
 
-
+```
 Network Name: (anything you'd like) e.g. Localhost
 New RPC URL: http://127.0.0.1:7545
 Chain ID: 1337
 Currency Symbol(Optional): ETH
 Block Explorer URL(Optional): (Leave empty!)
+```
 
 And now your wallet will be configured to your local host.
 
