@@ -1,3 +1,8 @@
+# Voting Web-app on the Rinkeby Network
+Hi! This is a my final year project. The objective of the project is to create a secure decentralised system for voting in the aid of combatting faulty voting using the blockchain. I build a website that takes a number of candidates names alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voter can then make a vote to their desire candidate into a ballt table.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
