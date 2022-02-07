@@ -50,7 +50,7 @@ and commenting out this out.
     },
 ```
 
-On the MetaMask Wallet in your browser if you haven't already got localhost configured go to Settings > Networks > Add Networks and type in the following:
+On the MetaMask Wallet in your browser if you haven't already got localhost configured go to (Settings > Networks > Add Networks) and type in the following:
 
 ```
 Network Name: (anything you'd like) e.g. Localhost
