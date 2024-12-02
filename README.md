@@ -124,4 +124,5 @@ To get a deeper analysis, type in:
 ```
 (This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
 
-<img width="518" alt="image" src="https://github.com/user-attachments/assets/6290bf39-cda3-4263-80f3-d8e5b1736a03">
+![dApp_Video_Demo-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/07a739ff-2d01-463c-b8cc-e33ce4187a2e)
+
