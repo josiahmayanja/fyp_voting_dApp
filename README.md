@@ -123,3 +123,5 @@ To get a deeper analysis, type in:
   $   truffle test --stacktrace-extra
 ```
 (This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
+
+<img width="518" alt="image" src="https://github.com/user-attachments/assets/6290bf39-cda3-4263-80f3-d8e5b1736a03">
