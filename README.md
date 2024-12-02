@@ -1,128 +1,121 @@
 # Voting dApp on the Rinkeby Network
 
-Hi! This is my final year project. The objective of the project is to create a secure decentralised system for voting that will combat electoral fraud using the blockchain. I built a site that takes a number of candidate names' alongside their respective ethereum addresses and deploys them inside of a smart contract onto the rinkeby network. The deployed contract will be called back, where voters can then cast a vote to their desired candidate onto the ballot table. I build the project using the react framework with Javscript, HTML, CSS. For the ethereum smart contact framework I used Truffle framework and developed them using Solidity and for the unit tests I used Javascript.
+This project aims to create a secure, decentralized voting system leveraging blockchain technology to combat electoral fraud. The dApp allows users to deploy a smart contract with candidate names and their corresponding Ethereum addresses on the Rinkeby test network. Voters can then cast their votes securely via the app.
 
-[![GitHub issues](https://img.shields.io/github/issues/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/issues)
-[![GitHub license](https://img.shields.io/github/license/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp)
-[![GitHub forks](https://img.shields.io/github/forks/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/network)
-[![GitHub stars](https://img.shields.io/github/stars/jmayanja-xyz/fyp_voting_dApp)](https://github.com/jmayanja-xyz/fyp_voting_dApp/stargazers)
+The front end is built with **React**, and the Ethereum smart contracts are developed using **Solidity** and the **Truffle framework**. Unit tests are written in **Mocha**.
+
+[![GitHub issues](https://img.shields.io/github/issues/josiahmayanja/fyp_voting_dApp)](https://github.com/josiahmayanja/fyp_voting_dApp/issues)
+[![GitHub license](https://img.shields.io/github/license/josiahmayanja/fyp_voting_dApp)](https://github.com/josiahmayanja/fyp_voting_dApp)
+[![GitHub forks](https://img.shields.io/github/forks/josiahmayanja/fyp_voting_dApp)](https://github.com/josiahmayanja/fyp_voting_dApp/network)
+[![GitHub stars](https://img.shields.io/github/stars/josiahmayanja/fyp_voting_dApp)](https://github.com/josiahmayanja/fyp_voting_dApp/stargazers)
+
+---
 
 ## Prerequisites
-```
-- npm:  >=8.1.2
-- node: >16.13.1
-- Download and make a metamask account on your browser
-- A node to connect dApp to blockchain
-```
 
-Download and make a Metamask Account at https://metamask.io/
-Go into the `secrets.js` file, which will be empty and inserted your 12-worded metamask mnemonic password.
+- **npm**: `>=8.1.2`
+- **node**: `>16.13.1`
+- **MetaMask**: Install and create an account ([MetaMask Download](https://metamask.io/))
+- **Blockchain Node**: Configure a node connection (e.g., [Moralis](https://moralis.io/))
 
-Also you'll want to have your own node, so make a Moralis account at https://moralis.io/ and go to the `Speedy Nodes` section. Click on `ETH network` for an endpoint and copy the Rinkeby URL. It will look like this:
+### Setting Up
 
-```
-https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/rinkeby
-```
- and replace it in rinekeby network export in the url section in `truffle-config.js`
+1. Add your MetaMask mnemonic (12-word phrase) to `secrets.js`.
+2. Obtain a Moralis Speedy Node endpoint for the Rinkeby network:
+   - Log into [Moralis](https://moralis.io/).
+   - Navigate to **Speedy Nodes** > **ETH Network** and copy the Rinkeby URL (e.g., `https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXX/eth/rinkeby`).
+3. Replace the URL in the `truffle-config.js` file:
 
-```javascript
- rinkeby: {
-      provider: () =>
-        new HDWalletProvider(
-          mnemonic,
-          `https://speedy-nodes-nyc.moralis.io/043306717a87e578f84a1f07/eth/rinkeby`
-        ),
-      network_id: 4, // rinkeby's id
-      gas: 5500000, // rinkeby has a lower block limit than mainnet
-      confirmations: 2, // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-    },
-```
-When you'll be doing transactions via Metamask you'll need test ether to do them for rinkeby as a default account will have 0 ETH. The best site to get some is from https://faucets.chain.link/rinkeby. And the site to see the transction in details is on https://rinkeby.etherscan.io all you need is the transcation hash that will be given to you in the console log to find it.
+   ```javascript
+   rinkeby: {
+     provider: () =>
+       new HDWalletProvider(
+         mnemonic,
+         `https://speedy-nodes-nyc.moralis.io/XXXXXXXXX/eth/rinkeby`
+       ),
+     network_id: 4, // Rinkeby's ID
+     gas: 5500000, // Block limit
+     confirmations: 2, // Confirmations before deployment
+     timeoutBlocks: 200, // Deployment timeout
+     skipDryRun: true, // Skip dry-run
+   },
+   ```
 
-## How to Run the Project
+4. Acquire test ETH for transactions from [Chainlink Faucet](https://faucets.chain.link/rinkeby).
+5. Use [Rinkeby Etherscan](https://rinkeby.etherscan.io) to verify transactions with the hash provided in the console log.
 
-After cloning the project, to run the application go into the terminal and find the project folder and type:
+---
 
-```
-$ npm run start
-```
+## Running the Project
 
-This will deploy the app at [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clone the repository.
+2. Navigate to the project folder in your terminal.
+3. Start the application:
 
-## How to run on local Ganache
+   ```bash
+   npm run start
+   ```
 
-To run the application to deploy transcations onto local ganache make sure the Ganache suite is open on the workspace and your looking to deploy on configure your server settings like this:
+The app will launch at [http://localhost:3000](http://localhost:3000).
 
-```
-     HOSTNAME: 127.0.0.1 - Io0   
-     PORT NUMBER: 7545
-     NETWORK ID: 5777
-```
+---
 
+## Running on Local Ganache
 
-Also make sure you reconfigure your `truffle-config.js` network exports to match this by uncommenting this section.
+To test on a local Ganache instance:
 
-```javascript
- development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
-    },
-```
-and commenting out this out.
+1. Open Ganache and set the following server configuration:
+   - **Hostname**: `127.0.0.1`
+   - **Port**: `7545`
+   - **Network ID**: `5777`
 
-```javascript
- rinkeby: {
-      provider: () =>
-        new HDWalletProvider(
-          mnemonic,
-          `https://speedy-nodes-nyc.moralis.io/043306717a87e578f84a1f07/eth/rinkeby`
-        ),
-      network_id: 4, // rinkeby's id
-      gas: 5500000, // rinkeby has a lower block limit than mainnet
-      confirmations: 2, // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-    },
-```
+2. Update the `truffle-config.js` file for development:
 
-On the MetaMask Wallet in your browser if you haven't already got localhost configured go to (Settings > Networks > Add Networks) and type in the following:
+   ```javascript
+   development: {
+     host: "127.0.0.1",
+     port: 7545,
+     network_id: "*", // Match any network ID
+   },
+   ```
 
-```
-Network Name: (anything you'd like) e.g. Localhost
-New RPC URL: http://127.0.0.1:7545
-Chain ID: 1337
-Currency Symbol(Optional): ETH
-Block Explorer URL(Optional): (Leave empty!)
-```
+3. Configure MetaMask for local testing:
+   - Navigate to **Settings > Networks > Add Network** and input:
+     - **Network Name**: Localhost
+     - **New RPC URL**: `http://127.0.0.1:7545`
+     - **Chain ID**: `1337`
+     - **Currency Symbol**: ETH (optional)
 
-And now your wallet will be configured to your local host network.
-
-#
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-You can contact me by sending to this email: jmayanja.xyz@gmail.com
+---
 
 ## Running Unit Tests
 
-In the project the unit test have been written in the `ballot.js` file located in the `test` folder in the Mocha framework.
+Unit tests are written in the `test/ballot.js` file using the Mocha framework.
 
-To run, open terminal go to the project folder type in
+Run tests with:
+
+```bash
+truffle test
 ```
-  $   truffle test
-``` 
-The terminal will then run the unit test.
 
-To get a deeper analysis, type in:
+For additional debugging information:
+
+```bash
+truffle test --stacktrace-extra
 ```
-  $   truffle test --stacktrace-extra
-```
-(This will turn on stack traces and will additionally compile contracts in Solidity's debug mode for additional revert messages)
 
-![dApp_Video_Demo-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/07a739ff-2d01-463c-b8cc-e33ce4187a2e)
+---
 
+## Contributing
+
+Contributions are welcome! Please create an issue to discuss significant changes before submitting a pull request.
+
+### Contact
+
+For questions, email: [jmayanja.xyz@gmail.com](mailto:jmayanja.xyz@gmail.com)
+
+---
+
+## Demo
+
+![dApp Video Demo](https://github.com/user-attachments/assets/07a739ff-2d01-463c-b8cc-e33ce4187a2e)
